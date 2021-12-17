@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Quicksand&display=swap');
+
 .TypeArena{
     width: 100%;
     min-height: 100vh;
     height: 100%;
+    background: linear-gradient(#000, #000022);
+    overflow: hidden;
+}
+
+.Screens{
+    width: 100%;
+    height: calc(100vh - 60px);
+}
+
+.ptr{
+    cursor: pointer;
 }
