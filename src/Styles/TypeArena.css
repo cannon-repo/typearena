@@ -1,18 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Quicksand&display=swap');
 
-.TypeArena{
-    width: 100%;
-    min-height: 100vh;
-    height: 100%;
-    background: linear-gradient(#000, #000022);
-    overflow: hidden;
+#root{
+    /* --orange: #b1782e; */
+    /* --copper: #b87333; */
+    /* --bg: #606060FF; */
+    --bg: #1C1C1BFF;
+    --nav: #1C1C1BFF;
+    --thick: rgb(200,150,0);
+    --orange: rgb(200, 150, 0);
+    --copper: rgb(200,150,0);
 }
 
-.Screens{
+.TypeArena{
     width: 100%;
-    height: calc(100vh - 60px);
+    height: 100vh;
+    /* background-color: #101922FF; */
+    /* background-color: #01121f; */
+    /* background-color: #1F2022; */
+    background-color: var(--bg);
+    overflow-y: hidden;
 }
 
 .ptr{
     cursor: pointer;
+}
+
+.ctr{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Screens{
+    width: calc(100% - 60px);
+    height: calc(100vh - 60px);
 }
