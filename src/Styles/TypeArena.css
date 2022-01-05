@@ -1,37 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Quicksand&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Quicksand&display=swap");
 
-#root{
-    /* --orange: #b1782e; */
-    /* --copper: #b87333; */
-    /* --bg: #606060FF; */
-    --bg: #1C1C1BFF;
-    --nav: #1C1C1BFF;
-    --thick: rgb(200,150,0);
-    --orange: rgb(200, 150, 0);
-    --copper: rgb(200,150,0);
+#root {
+  /* --orange: #b1782e; */
+  /* --copper: #b87333; */
+  --extraBg: #606060ff;
+  --bg: #1c1c1bff;
+  --nav: #1c1c1bff;
+  --thick: rgb(200, 150, 0);
+  --orange: rgb(200, 150, 0);
+  --copper: rgb(200, 150, 0);
 }
 
-.TypeArena{
-    width: 100%;
-    height: 100vh;
-    /* background-color: #101922FF; */
-    /* background-color: #01121f; */
-    /* background-color: #1F2022; */
-    background-color: var(--bg);
-    overflow-y: hidden;
+.TypeArena {
+  width: 100%;
+  height: 100vh;
+  /* background-color: #101922FF; */
+  /* background-color: #01121f; */
+  /* background-color: #1F2022; */
+  background-color: var(--bg);
+  overflow-y: hidden;
 }
 
-.ptr{
-    cursor: pointer;
+.ptr {
+  cursor: pointer;
 }
 
-.ctr{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.ctr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.Screens{
-    width: calc(100% - 60px);
-    height: calc(100vh - 60px);
+.Screens {
+  width: calc(100% - 55px);
+  height: calc(100vh - 55px);
+}
+
+.RulesModalWrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Backface {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1;
+}
+
+.RulesModal {
+  width: 90%;
+  max-width: 450px;
+  max-height: 400px;
+  background-color: gainsboro;
+  z-index: 2;
+  padding: 10px 15px;
+  border-radius: 6px;
+  overflow-y: scroll;
+}
+
+.RulesModal::-webkit-scrollbar{
+    width: 5px;
+}
+
+.RulesModal::-webkit-scrollbar-thumb{
+    background-color: #888;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+}
+
+.RulesModal::-webkit-scrollbar-thumb:hover{
+    background-color: #777;
+}
+
+.List{
+    margin: 15px 0px;
+    color: #000;
+    font-size: 18px;
+    font-family: 'Poppins';
 }

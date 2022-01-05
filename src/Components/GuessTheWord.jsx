@@ -10,6 +10,9 @@ import { decTime, resetTime, startTimer, stopTimer } from "../Redux/TimerSlice";
 import { gotCorrect, gotWrong, resetWordResult } from "../Redux/WordResult";
 import { initializeMatchObj, clearMatchObj } from "../Redux/WordGuessData";
 import { generateWordWithBlanks } from "../Assets/Data/generateBlanks";
+import {toggleRuleView} from "../Redux/RulesViewSlice";
+import RulesModal from "./RulesModal";
+import {WordGuessRules} from "../Assets/Data/WordGuessRules";
 
 const GuessTheWord = () => {
 
@@ -19,9 +22,26 @@ const GuessTheWord = () => {
   const pts = useSelector((state) => state.wordResult.pts);
   const completeWord = useSelector((state) => state.guessData.completeWord);
   const incompleteWord = useSelector((state) => state.guessData.incompleteWord);
+  const rulesView = useSelector((state) => state.rulesView.rulesView);
 
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
+
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if(isFirstRender.current){
+      if(rulesView){
+        dispatch(toggleRuleView());
+      }
+      isFirstRender.current = false;
+      return;
+    }
+  },[dispatch,rulesView]);
+
+  const ruleViewHandler = () => {
+    dispatch(toggleRuleView());
+  }
 
   const resetHandler = () => {
     setReset(!reset);
@@ -74,11 +94,14 @@ const GuessTheWord = () => {
 
   return (
     <div className="GuessTheWord">
+      {
+        rulesView && <RulesModal rules={WordGuessRules}/>
+      }
       <div className="InfoNav">
         <div className="Reload ptr" onClick={resetHandler}>
           <AiOutlineReload />
         </div>
-        <div className="Guide ptr">
+        <div className="Guide ptr" onClick={ruleViewHandler}>
           <BiQuestionMark />
         </div>
       </div>

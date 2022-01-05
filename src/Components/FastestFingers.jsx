@@ -10,6 +10,9 @@ import { useState } from "react";
 import {preArr} from "../Assets/Data/prefixes";
 import {initializeMatchingArr,initializePrefix} from "../Redux/FastestFingersData";
 import { gotCorrect, gotWrong, resetWordResult} from "../Redux/WordResult";
+import {FastestFingersRules} from "../Assets/Data/FastestFingersRules";
+import { toggleRuleView } from "../Redux/RulesViewSlice";
+import RulesModal from "./RulesModal";
 
 const len = preArr.length - 1;
 const FastestFingers = () => {
@@ -21,10 +24,27 @@ const FastestFingers = () => {
     const matchingArr = useSelector((state) => state.ffdata.matchingArr);
     const pts = useSelector((state) => state.wordResult.pts);
     const correctWords = useSelector((state) => state.wordResult.correctWords);
+    const rulesView = useSelector((state) => state.rulesView.rulesView);
 
     const inputRef = useRef(null);
 
     const [reset,setReset] = useState(true);
+
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+      if (isFirstRender.current) {
+        if (rulesView) {
+          dispatch(toggleRuleView());
+        }
+        isFirstRender.current = false;
+        return;
+      }
+    }, [dispatch, rulesView]);
+
+    const ruleViewHandler = () => {
+      dispatch(toggleRuleView());
+    }
 
     const resetHandler = () => {
       setReset(!reset);
@@ -92,11 +112,14 @@ const FastestFingers = () => {
 
     return (
     <div className="FastestFingers">
+      {
+        rulesView && <RulesModal rules={FastestFingersRules}/>
+      }
       <div className="InfoNav">
         <div className="Reload ptr" onClick={resetHandler}>
           <AiOutlineReload />
         </div>
-        <div className="Guide ptr">
+        <div className="Guide ptr" onClick={ruleViewHandler}>
           <BiQuestionMark />
         </div>
       </div>

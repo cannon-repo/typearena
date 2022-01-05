@@ -1,37 +1,37 @@
-.GuessTheWord{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+.GuessTheWord {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.Guide{
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    border: 2px solid var(--orange);
-    font-size: 30px;
-    color: gainsboro;
+.Guide {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--orange);
+  font-size: 30px;
+  color: gainsboro;
 }
 
-.TimerNav{
-    margin-top: 25px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    padding: 0px 10px;
-    justify-content: space-between;
+.TimerNav {
+  margin-top: 25px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: 0px 10px;
+  justify-content: space-between;
 }
 
-.FillInTheBlanks{
-    font-family: 'Quicksand';
-    font-size: calc(30px + 2vw);
-    margin-top: calc(50px + 2vw);
-    color: gainsboro;
+.FillInTheBlanks {
+  font-family: "Quicksand";
+  font-size: calc(30px + 2vw);
+  margin-top: calc(50px + 2vw);
+  color: gainsboro;
 }
