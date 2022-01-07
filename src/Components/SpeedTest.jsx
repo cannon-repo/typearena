@@ -21,19 +21,20 @@ const SpeedTest = () => {
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
   const [value,setValue] = useState("");
+  const [disabled,setDisabled] = useState('');
 
   const resetHandler = () => {
     setReset(!reset);
-    dispatch(resetTime());
-    setValue("");
-    inputRef.current.disabled = false;
+  };
+  
+  useEffect(() => {
     inputRef.current.style.color = 'gainsboro';
     wordProcessed.current = false;
     prvLength.current = 0;
-  };
-
-  useEffect(() => {
+    setValue("");
     dispatch(initPara({para: generatePara()}));
+    dispatch(resetTime());
+    setDisabled('');
   },[reset,dispatch]);
 
   const inputChangeHandler = (e) => {
@@ -114,10 +115,17 @@ const SpeedTest = () => {
     return () => clearInterval(counter);
   }, [timeVal, clockState, dispatch]);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
+    if(firstRender.current){
+      firstRender.current = false;
+      return;
+    }
     if (timeVal === 0) {
-        inputRef.current.disabled = true;
+        setDisabled('disabled');
         inputRef.current.style.color = '#999';
+        // dispatch(resetTime());
     }
   }, [timeVal]);
 
@@ -145,6 +153,7 @@ const SpeedTest = () => {
         value={value}
         className="InputLine"
         placeholder="Timer Starts As You Start Typing"
+        disabled={disabled}
       />
     </div>
   );

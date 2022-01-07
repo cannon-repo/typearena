@@ -45,17 +45,26 @@ const GuessTheWord = () => {
 
   const resetHandler = () => {
     setReset(!reset);
+  };
+  const [disabled,setDisabled] = useState('');
+  
+  useEffect(() => {
     dispatch(resetTime());
     dispatch(resetWordResult());
     dispatch(clearMatchObj());
+    setDisabled('');
     inputRef.current.value = "";
-    inputRef.current.disabled = false;
-  };
-
+    inputRef.current.style.color = "gainsboro";
+    setToggle(!toggle);
+    // eslint-disable-next-line
+  }, [reset,dispatch]);
+  
+  const [toggle,setToggle] = useState(true);
+  
   useEffect(() => {
     const dataObj = generateWordWithBlanks();
     dispatch(initializeMatchObj({completeWord: dataObj.completeWord, incompleteWord: dataObj.incompleteWord}));
-  }, [reset,dispatch]);
+  }, [toggle, dispatch]);
 
   const inputChangeHandler = () => {
     if (inputRef.current.value.length > 0 && !clockState) {
@@ -73,7 +82,7 @@ const GuessTheWord = () => {
         } else {
           dispatch(gotWrong({word: feed}));
         }
-        setReset(!reset);
+        setToggle(!toggle);
       }
     }
   };
@@ -88,8 +97,17 @@ const GuessTheWord = () => {
     return () => clearInterval(counter);
   }, [timeVal, clockState, dispatch]);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
-    if (timeVal === 0) inputRef.current.disabled = true;
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (timeVal === 0) {
+      setDisabled('disabled');
+      inputRef.current.style.color = "#999";
+    }
   }, [timeVal]);
 
   return (
@@ -123,6 +141,7 @@ const GuessTheWord = () => {
         onKeyPress={keyPressHandler}
         className="InputLine"
         placeholder="Complete The Word And Press Enter"
+        disabled={disabled}
       />
     </div>
   );
