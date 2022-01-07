@@ -8,14 +8,17 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { decTime, resetTime, startTimer, stopTimer } from "../Redux/TimerSlice";
 import { gotCorrect, gotWrong, resetWordResult } from "../Redux/WordResult";
-import { initializeMatchObj, clearMatchObj } from "../Redux/WordGuessData";
+import {
+  initializeMatchObj,
+  clearMatchObj,
+  setWGHighScore,
+} from "../Redux/WordGuessData";
 import { generateWordWithBlanks } from "../Assets/Data/generateBlanks";
-import {toggleRuleView} from "../Redux/RulesViewSlice";
+import { toggleRuleView } from "../Redux/RulesViewSlice";
 import RulesModal from "./RulesModal";
-import {WordGuessRules} from "../Assets/Data/WordGuessRules";
+import { WordGuessRules } from "../Assets/Data/WordGuessRules";
 
 const GuessTheWord = () => {
-
   const dispatch = useDispatch();
   const timeVal = useSelector((state) => state.timer.timeVal);
   const clockState = useSelector((state) => state.timer.running);
@@ -23,6 +26,7 @@ const GuessTheWord = () => {
   const completeWord = useSelector((state) => state.guessData.completeWord);
   const incompleteWord = useSelector((state) => state.guessData.incompleteWord);
   const rulesView = useSelector((state) => state.rulesView.rulesView);
+  const highScoreWG = useSelector((state) => state.guessData.highScoreWG);
 
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
@@ -30,40 +34,45 @@ const GuessTheWord = () => {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if(isFirstRender.current){
-      if(rulesView){
+    if (isFirstRender.current) {
+      if (rulesView) {
         dispatch(toggleRuleView());
       }
       isFirstRender.current = false;
       return;
     }
-  },[dispatch,rulesView]);
+  }, [dispatch, rulesView]);
 
   const ruleViewHandler = () => {
     dispatch(toggleRuleView());
-  }
+  };
 
   const resetHandler = () => {
     setReset(!reset);
   };
-  const [disabled,setDisabled] = useState('');
-  
+  const [disabled, setDisabled] = useState("");
+
   useEffect(() => {
     dispatch(resetTime());
     dispatch(resetWordResult());
     dispatch(clearMatchObj());
-    setDisabled('');
+    setDisabled("");
     inputRef.current.value = "";
     inputRef.current.style.color = "gainsboro";
     setToggle(!toggle);
     // eslint-disable-next-line
-  }, [reset,dispatch]);
-  
-  const [toggle,setToggle] = useState(true);
-  
+  }, [reset, dispatch]);
+
+  const [toggle, setToggle] = useState(true);
+
   useEffect(() => {
     const dataObj = generateWordWithBlanks();
-    dispatch(initializeMatchObj({completeWord: dataObj.completeWord, incompleteWord: dataObj.incompleteWord}));
+    dispatch(
+      initializeMatchObj({
+        completeWord: dataObj.completeWord,
+        incompleteWord: dataObj.incompleteWord,
+      })
+    );
   }, [toggle, dispatch]);
 
   const inputChangeHandler = () => {
@@ -77,10 +86,10 @@ const GuessTheWord = () => {
       if (inputRef.current.value.length > 0) {
         const feed = inputRef.current.value;
         inputRef.current.value = "";
-        if(feed === completeWord) {
-          dispatch(gotCorrect({word: feed}));
+        if (feed === completeWord) {
+          dispatch(gotCorrect({ word: feed }));
         } else {
-          dispatch(gotWrong({word: feed}));
+          dispatch(gotWrong({ word: feed }));
         }
         setToggle(!toggle);
       }
@@ -105,16 +114,15 @@ const GuessTheWord = () => {
       return;
     }
     if (timeVal === 0) {
-      setDisabled('disabled');
+      setDisabled("disabled");
       inputRef.current.style.color = "#999";
+      dispatch(setWGHighScore({ score: pts }));
     }
-  }, [timeVal]);
+  }, [timeVal, dispatch, pts]);
 
   return (
     <div className="GuessTheWord">
-      {
-        rulesView && <RulesModal rules={WordGuessRules}/>
-      }
+      {rulesView && <RulesModal rules={WordGuessRules} />}
       <div className="InfoNav">
         <div className="Reload ptr" onClick={resetHandler}>
           <AiOutlineReload />
@@ -133,16 +141,21 @@ const GuessTheWord = () => {
           <span className="HighLight">Pts</span>
         </div>
       </div>
-      <div className="FillInTheBlanks">{incompleteWord}</div>
-      <input
-        ref={inputRef}
-        type="text"
-        onChange={inputChangeHandler}
-        onKeyPress={keyPressHandler}
-        className="InputLine"
-        placeholder="Complete The Word And Press Enter"
-        disabled={disabled}
-      />
+      <div className="PseudoWrap">
+        <div className="Wrap">
+          <div className="FillInTheBlanks">{incompleteWord}</div>
+          <input
+            ref={inputRef}
+            type="text"
+            onChange={inputChangeHandler}
+            onKeyPress={keyPressHandler}
+            className="InputLine"
+            placeholder="Complete The Word And Press Enter"
+            disabled={disabled}
+          />
+        </div>
+        <footer className="Footer">Highest Score: {highScoreWG}</footer>
+      </div>
     </div>
   );
 };

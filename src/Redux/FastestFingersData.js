@@ -5,6 +5,7 @@ const FastestFingersDataSlice = createSlice({
     initialState: {
         prefix: '',
         matchingArr: [],
+        highScoreFF: 0,
     },
     reducers: {
         initializePrefix: (state,payload) => {
@@ -12,9 +13,12 @@ const FastestFingersDataSlice = createSlice({
         },
         initializeMatchingArr: (state,payload) => {
             state.matchingArr = payload.payload.matchingArr;
-        }
+        },
+        setHighScoreFF: (state,payload) => {
+            state.highScoreFF = Math.max(state.highScoreFF,payload.payload.score);
+        },
     }
 });
 
 export default FastestFingersDataSlice.reducer;
-export const {initializeMatchingArr, initializePrefix} = FastestFingersDataSlice.actions;
+export const {initializeMatchingArr, initializePrefix, setHighScoreFF} = FastestFingersDataSlice.actions;

@@ -11,6 +11,7 @@ import { preArr } from "../Assets/Data/prefixes";
 import {
   initializeMatchingArr,
   initializePrefix,
+  setHighScoreFF,
 } from "../Redux/FastestFingersData";
 import { gotCorrect, gotWrong, resetWordResult } from "../Redux/WordResult";
 import { FastestFingersRules } from "../Assets/Data/FastestFingersRules";
@@ -27,6 +28,7 @@ const FastestFingers = () => {
   const pts = useSelector((state) => state.wordResult.pts);
   const correctWords = useSelector((state) => state.wordResult.correctWords);
   const rulesView = useSelector((state) => state.rulesView.rulesView);
+  const highScoreFF = useSelector((state) => state.ffdata.highScoreFF);
 
   const inputRef = useRef(null);
 
@@ -122,8 +124,9 @@ const FastestFingers = () => {
     if (timeVal === 0) {
       setDisabled("disabled");
       inputRef.current.style.color = "#999";
+      dispatch(setHighScoreFF({ score: pts }));
     }
-  }, [timeVal]);
+  }, [timeVal, dispatch, pts]);
 
   return (
     <div className="FastestFingers">
@@ -146,19 +149,24 @@ const FastestFingers = () => {
           <span className="HighLight">Pts</span>
         </div>
       </div>
-      <div className="FillInTheBlanks">
-        {prefixWord}
-        <span className="UnderLine">___________</span>
+      <div className="PseudoWrap">
+        <div className="Wrap">
+          <div className="FillInTheBlanks">
+            {prefixWord}
+            <span className="UnderLine">___________</span>
+          </div>
+          <input
+            ref={inputRef}
+            type="text"
+            onChange={inputChangeHandler}
+            onKeyPress={keyPressHandler}
+            className="InputLine"
+            placeholder="Complete The Word And Press Enter"
+            disabled={disabled}
+          />
+        </div>
+        <footer className="Footer">Highest Score: {highScoreFF}</footer>
       </div>
-      <input
-        ref={inputRef}
-        type="text"
-        onChange={inputChangeHandler}
-        onKeyPress={keyPressHandler}
-        className="InputLine"
-        placeholder="Complete The Word And Press Enter"
-        disabled={disabled}
-      />
     </div>
   );
 };

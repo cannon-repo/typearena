@@ -5,6 +5,7 @@ const WordGuessDataSlice = createSlice({
     initialState: {
         completeWord: '',
         incompleteWord: '',
+        highScoreWG: 0,
     },
     reducers: {
         initializeMatchObj: (state, payload) => {
@@ -14,9 +15,12 @@ const WordGuessDataSlice = createSlice({
         clearMatchObj: (state) => {
             state.completeWord = '';
             state.incompleteWord = '';
+        },
+        setWGHighScore: (state,payload) => {
+            state.highScoreWG = Math.max(state.highScoreWG,payload.payload.score);
         }
     }
 });
 
 export default WordGuessDataSlice.reducer;
-export const { initializeMatchObj, clearMatchObj } = WordGuessDataSlice.actions;
+export const { initializeMatchObj, clearMatchObj, setWGHighScore } = WordGuessDataSlice.actions;

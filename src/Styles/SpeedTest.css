@@ -66,7 +66,7 @@
     background-color: transparent;
     border: 0px;
     border-bottom: 2px solid var(--copper);
-    margin-top: 75px;
+    margin: 75px 0px 0px 0px;
     width: 90%;
     max-width: 500px;
     padding: 5px 5px;
