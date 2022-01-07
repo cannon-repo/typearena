@@ -19,7 +19,7 @@ const WordResultSlice = createSlice({
         },
         gotWrong: (state,payload) => {
             state.pts = Math.max(0,state.pts-5);
-            state.correctWords.push(payload.payload.word);
+            state.wrongWords.push(payload.payload.word);
         }
     }
 });

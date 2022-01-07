@@ -17,6 +17,7 @@ import { generateWordWithBlanks } from "../Assets/Data/generateBlanks";
 import { toggleRuleView } from "../Redux/RulesViewSlice";
 import RulesModal from "./RulesModal";
 import { WordGuessRules } from "../Assets/Data/WordGuessRules";
+import WordResultModal from "./WordResultModal";
 
 const GuessTheWord = () => {
   const dispatch = useDispatch();
@@ -27,9 +28,12 @@ const GuessTheWord = () => {
   const incompleteWord = useSelector((state) => state.guessData.incompleteWord);
   const rulesView = useSelector((state) => state.rulesView.rulesView);
   const highScoreWG = useSelector((state) => state.guessData.highScoreWG);
+  const correctWords = useSelector((state) => state.wordResult.correctWords);
+  const wrongWords = useSelector((state) => state.wordResult.wrongWords);
 
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
+  const [result, showResult] = useState(false);
 
   const isFirstRender = useRef(true);
 
@@ -60,6 +64,7 @@ const GuessTheWord = () => {
     inputRef.current.value = "";
     inputRef.current.style.color = "gainsboro";
     setToggle(!toggle);
+    showResult(false);
     // eslint-disable-next-line
   }, [reset, dispatch]);
 
@@ -117,12 +122,16 @@ const GuessTheWord = () => {
       setDisabled("disabled");
       inputRef.current.style.color = "#999";
       dispatch(setWGHighScore({ score: pts }));
+      showResult(true);
     }
   }, [timeVal, dispatch, pts]);
 
   return (
     <div className="GuessTheWord">
       {rulesView && <RulesModal rules={WordGuessRules} />}
+      {
+        result && <WordResultModal correctWords={correctWords} wrongWords={wrongWords} view={showResult}/>
+      }
       <div className="InfoNav">
         <div className="Reload ptr" onClick={resetHandler}>
           <AiOutlineReload />

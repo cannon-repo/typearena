@@ -17,6 +17,7 @@ import { gotCorrect, gotWrong, resetWordResult } from "../Redux/WordResult";
 import { FastestFingersRules } from "../Assets/Data/FastestFingersRules";
 import { toggleRuleView } from "../Redux/RulesViewSlice";
 import RulesModal from "./RulesModal";
+import WordResultModal from "./WordResultModal";
 
 const len = preArr.length - 1;
 const FastestFingers = () => {
@@ -27,14 +28,16 @@ const FastestFingers = () => {
   const matchingArr = useSelector((state) => state.ffdata.matchingArr);
   const pts = useSelector((state) => state.wordResult.pts);
   const correctWords = useSelector((state) => state.wordResult.correctWords);
+  const wrongWords = useSelector((state) => state.wordResult.wrongWords);
   const rulesView = useSelector((state) => state.rulesView.rulesView);
   const highScoreFF = useSelector((state) => state.ffdata.highScoreFF);
-
+  
   const inputRef = useRef(null);
-
+  
   const [reset, setReset] = useState(true);
   const [disabled, setDisabled] = useState("");
-
+  const [result, showResult] = useState(false);
+  
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const FastestFingers = () => {
   const ruleViewHandler = () => {
     dispatch(toggleRuleView());
   };
-
+  
   const resetHandler = () => {
     setReset(!reset);
   };
@@ -66,6 +69,7 @@ const FastestFingers = () => {
     inputRef.current.value = "";
     inputRef.current.style.color = "gainsboro";
     setDisabled("");
+    showResult(false);
   }, [reset, dispatch]);
 
   useEffect(() => {
@@ -125,12 +129,16 @@ const FastestFingers = () => {
       setDisabled("disabled");
       inputRef.current.style.color = "#999";
       dispatch(setHighScoreFF({ score: pts }));
+      showResult(true);
     }
   }, [timeVal, dispatch, pts]);
 
   return (
     <div className="FastestFingers">
       {rulesView && <RulesModal rules={FastestFingersRules} />}
+      {
+        result && <WordResultModal correctWords={correctWords} wrongWords={wrongWords} view={showResult}/>
+      }
       <div className="InfoNav">
         <div className="Reload ptr" onClick={resetHandler}>
           <AiOutlineReload />
