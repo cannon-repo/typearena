@@ -8,6 +8,8 @@ import { decTime, resetTime, stopTimer, startTimer } from "../Redux/TimerSlice";
 import { useState } from "react";
 import { generatePara } from "../Assets/Data/generatePara";
 import {initPara, gotCorrect, gotWrong, backspace, incWrongCnt, decWrongCnt, markCurr} from "../Redux/SpeedDataSlice";
+import { initializeWPM, setWPMnAcc} from "../Redux/WPMResultSlice";
+import WPMResultModal from "./WPMResultModal";
 
 const SpeedTest = () => {
 
@@ -17,11 +19,15 @@ const SpeedTest = () => {
   const para = useSelector((state) => state.speedData.para);
   const ptr = useSelector((state) => state.speedData.ptr);
   const wrongCnt = useSelector((state) => state.speedData.wrongCnt);
+  const errors = useSelector((state) => state.speedData.errors);
+  const wpmVal = useSelector((state) => state.wpmResult.wpm);
+  const accVal = useSelector((state) => state.wpmResult.acc);
   
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
   const [value,setValue] = useState("");
   const [disabled,setDisabled] = useState('');
+  const [result, showResult] = useState(false);
 
   const resetHandler = () => {
     setReset(!reset);
@@ -34,7 +40,9 @@ const SpeedTest = () => {
     setValue("");
     dispatch(initPara({para: generatePara()}));
     dispatch(resetTime());
+    dispatch(initializeWPM());
     setDisabled('');
+    showResult(false);
   },[reset,dispatch]);
 
   const inputChangeHandler = (e) => {
@@ -117,6 +125,20 @@ const SpeedTest = () => {
 
   const firstRender = useRef(true);
 
+  const calculateNetWPM = () => {
+    const len = ptr, wrongChars = wrongCnt;
+    const grossWords = Math.ceil(len/5);
+    const netWords = grossWords - wrongChars;
+    let wpm = Math.max(Math.floor(netWords*2),0);
+    return wpm;
+  }
+
+  const calcAccuracy = () => {
+    const correctChars = ptr - errors;
+    const accuracy = Math.floor((correctChars/ptr)*100);
+    return accuracy;
+  }
+
   useEffect(() => {
     if(firstRender.current){
       firstRender.current = false;
@@ -125,12 +147,17 @@ const SpeedTest = () => {
     if (timeVal === 0) {
         setDisabled('disabled');
         inputRef.current.style.color = '#999';
-        // dispatch(resetTime());
+        dispatch(setWPMnAcc({wpm: calculateNetWPM(), acc: calcAccuracy()}));
+        showResult(true);
     }
+  // eslint-disable-next-line
   }, [timeVal]);
 
   return (
     <div className="SpeedTest">
+      {
+        result && <WPMResultModal view={showResult} wpm={wpmVal} acc={accVal}/>
+      }
       <div className="InfoNav">
         <div className="ThickText">
           {timeVal}<span className="HighLight">s</span>

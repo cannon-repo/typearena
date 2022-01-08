@@ -92,9 +92,9 @@ const GuessTheWord = () => {
         const feed = inputRef.current.value;
         inputRef.current.value = "";
         if (feed === completeWord) {
-          dispatch(gotCorrect({ word: feed }));
+          dispatch(gotCorrect({ word: completeWord }));
         } else {
-          dispatch(gotWrong({ word: feed }));
+          dispatch(gotWrong({ word: completeWord }));
         }
         setToggle(!toggle);
       }

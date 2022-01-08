@@ -6,6 +6,7 @@ import FastestFingersDataReducer from "./FastestFingersData";
 import WordGuessData from "./WordGuessData";
 import SpeedDataSlice from "./SpeedDataSlice";
 import RulesViewSlice from "./RulesViewSlice";
+import WPMResultSlice from "./WPMResultSlice";
 
 const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
         guessData: WordGuessData,
         speedData: SpeedDataSlice,
         rulesView: RulesViewSlice,
+        wpmResult: WPMResultSlice,
     }
 });
 

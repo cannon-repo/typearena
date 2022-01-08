@@ -6,6 +6,7 @@ const SpeedTestSlice = createSlice({
         para: [],
         ptr: 0,
         wrongCnt: 0,
+        errors: 0,
     },
     reducers: {
         initPara: (state,payload) => {
@@ -13,6 +14,7 @@ const SpeedTestSlice = createSlice({
             state.ptr = 0;
             state.wrongCnt = 0;
             state.para[0].isCurr = true;
+            state.errors = 0;
         },
         gotCorrect: (state) => {
             state.para[state.ptr].cName = 'correct';
@@ -21,6 +23,7 @@ const SpeedTestSlice = createSlice({
         gotWrong: (state) => {
             state.para[state.ptr].cName = 'wrong';
             state.ptr++;
+            state.errors++;
         },
         backspace: (state) => {
             state.ptr--;
