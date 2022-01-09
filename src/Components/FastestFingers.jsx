@@ -89,7 +89,8 @@ const FastestFingers = () => {
   };
 
   const keyPressHandler = (e) => {
-    if (e.code === "Enter") {
+    if (e.charCode === 13) {
+    // if (e.code === "Enter" || e.charCode === 13) {
       if (inputRef.current.value.length > 0) {
         const feed = inputRef.current.value;
         inputRef.current.value = "";
