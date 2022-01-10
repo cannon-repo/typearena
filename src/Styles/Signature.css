@@ -1,0 +1,24 @@
+.Signature{
+    position: fixed;
+    bottom: 10px;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Signature p{
+    font-size: 20px;
+    color: #777;
+    font-family: 'Quicksand';
+}
+
+.Sign{
+    width: 120px;
+    height: 50px;
+    background-image: url(../Assets/digiSign1.png);
+    background-size: cover;
+    background-position: center;
+    filter: invert(80%);
+}

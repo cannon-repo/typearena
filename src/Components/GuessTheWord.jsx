@@ -18,6 +18,7 @@ import { toggleRuleView } from "../Redux/RulesViewSlice";
 import RulesModal from "./RulesModal";
 import { WordGuessRules } from "../Assets/Data/WordGuessRules";
 import WordResultModal from "./WordResultModal";
+import { useWindowSize } from "../Hooks/ResizeHook";
 
 const GuessTheWord = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const GuessTheWord = () => {
   const inputRef = useRef(null);
   const [reset, setReset] = useState(true);
   const [result, showResult] = useState(false);
+  const [,height] = useWindowSize();
 
   const isFirstRender = useRef(true);
 
@@ -152,7 +154,7 @@ const GuessTheWord = () => {
       </div>
       <div className="PseudoWrap">
         <div className="Wrap">
-          <div className="FillInTheBlanks">{incompleteWord}</div>
+          <div className="FillInTheBlanks" style={{marginTop: (height/10), marginBottom: (height/10)}}>{incompleteWord}</div>
           <input
             ref={inputRef}
             type="text"

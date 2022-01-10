@@ -44,7 +44,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    height: 100vh;
+    height: var(--fullheight);
     width: 270px;
     padding-top: 100px;
     display: flex;

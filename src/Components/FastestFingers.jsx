@@ -18,6 +18,7 @@ import { FastestFingersRules } from "../Assets/Data/FastestFingersRules";
 import { toggleRuleView } from "../Redux/RulesViewSlice";
 import RulesModal from "./RulesModal";
 import WordResultModal from "./WordResultModal";
+import { useWindowSize } from "../Hooks/ResizeHook";
 
 const len = preArr.length - 1;
 const FastestFingers = () => {
@@ -37,6 +38,7 @@ const FastestFingers = () => {
   const [reset, setReset] = useState(true);
   const [disabled, setDisabled] = useState("");
   const [result, showResult] = useState(false);
+  const [,height] = useWindowSize();
   
   const isFirstRender = useRef(true);
 
@@ -73,6 +75,9 @@ const FastestFingers = () => {
   }, [reset, dispatch]);
 
   useEffect(() => {
+    if(prefixWord.length === 0){
+      return;
+    }
     const url = `https://api.datamuse.com/words?sp=${prefixWord}*`;
     fetch(url)
       .then((res) => res.json())
@@ -81,6 +86,28 @@ const FastestFingers = () => {
       })
       .catch(() => alert("slow net"));
   }, [prefixWord, dispatch]);
+
+  useEffect(() => {
+    if(prefixWord.length === 0){
+      return;
+    }
+    if(matchingArr.length === 0){
+      setReset(!reset);
+    } else {
+      let ok = true;
+      const mn = Math.min(matchingArr[0].word.length,prefixWord.length);
+      for(let i=0;i<mn;i++){
+        if(matchingArr[0].word[i] !== prefixWord[i]){
+          ok = false;
+          break;
+        }
+      }
+      if(!ok){
+        setReset(!reset);
+      }
+    }
+    // eslint-disable-next-line
+  },[matchingArr]);
 
   const inputChangeHandler = () => {
     if (inputRef.current.value.length > 0 && !clockState) {
@@ -160,7 +187,7 @@ const FastestFingers = () => {
       </div>
       <div className="PseudoWrap">
         <div className="Wrap">
-          <div className="FillInTheBlanks">
+          <div className="FillInTheBlanks" style={{marginTop: (height/10), marginBottom: (height/10)}}>
             {prefixWord}
             <span className="UnderLine">___________</span>
           </div>

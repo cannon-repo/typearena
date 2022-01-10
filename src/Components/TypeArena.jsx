@@ -5,12 +5,16 @@ import SpeedTest from './SpeedTest';
 import GuessTheWord from './GuessTheWord';
 import FastestFingers from './FastestFingers';
 import {Route, Routes, Navigate} from "react-router-dom";
+import {useWindowSize} from "../Hooks/ResizeHook";
 
 const TypeArena = () => {
+
+  const [, height] = useWindowSize();
+
   return (
     <div className='TypeArena'>
       <NavBar/>
-      <div className='Screens'>
+      <div className='Screens' style={{height: height - 60 + 'px'}}>
         <Routes>
           <Route path="/" element={<Navigate to="/speedtest"/>}/>
           <Route path="/speedtest" element={<SpeedTest/>}/>

@@ -51,6 +51,5 @@
 .FillInTheBlanks {
   font-family: "Quicksand";
   font-size: calc(30px + 2vw);
-  margin-top: calc(50px + 2vw);
   color: gainsboro;
 }

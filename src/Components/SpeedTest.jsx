@@ -10,6 +10,8 @@ import { generatePara } from "../Assets/Data/generatePara";
 import {initPara, gotCorrect, gotWrong, backspace, incWrongCnt, decWrongCnt, markCurr} from "../Redux/SpeedDataSlice";
 import { initializeWPM, setWPMnAcc} from "../Redux/WPMResultSlice";
 import WPMResultModal from "./WPMResultModal";
+import { useWindowSize } from "../Hooks/ResizeHook";
+import Signature from "./Signature";
 
 const SpeedTest = () => {
 
@@ -28,6 +30,7 @@ const SpeedTest = () => {
   const [value,setValue] = useState("");
   const [disabled,setDisabled] = useState('');
   const [result, showResult] = useState(false);
+  const [, height] = useWindowSize();
 
   const resetHandler = () => {
     setReset(!reset);
@@ -166,14 +169,14 @@ const SpeedTest = () => {
           <AiOutlineReload />
         </div>
       </div>
-      <div className="WordBox">
+      <div className="WordBox" style={{height: Math.min(200,(height)/6)}}>
         {
             para.map((val,index) => {
                 return (val.isCurr ? <span ref={bringToView} key={index} className={val.cName}>{val.alpha}</span> : <span key={index} className={val.cName}>{val.alpha}</span>)
             })
         }
       </div>
-      <input
+      <input style={{marginTop: '75px'}}
         type="text"
         ref={inputRef}
         onChange={inputChangeHandler}
@@ -182,6 +185,7 @@ const SpeedTest = () => {
         placeholder="Timer Starts As You Start Typing"
         disabled={disabled}
       />
+      <Signature/>
     </div>
   );
 };
